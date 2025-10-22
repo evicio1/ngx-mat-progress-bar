@@ -1,6 +1,6 @@
 {
   "name": "ngx-mat-progress-bar",
-  "version": "1.0.1",
+  "version": "20.0.0",
   "description": "Angular Material progress bar library workspace with modern Angular standalone architecture",
   "scripts": {
     "ng": "ng",
