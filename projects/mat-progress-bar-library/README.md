@@ -46,8 +46,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { 
   provideNgxMatProgressBar, 
-  httpProgressInterceptor,
-  provideNgxMatProgressBarOptions 
+  httpProgressInterceptor
 } from 'ngx-mat-progress-bar';
 
 bootstrapApplication(AppComponent, {
@@ -55,8 +54,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(
       withInterceptors([httpProgressInterceptor])
     ),
-    // Optional: Configure progress bar options
-    provideNgxMatProgressBarOptions({
+    // Single provider for all configuration
+    provideNgxMatProgressBar({
+      // UI Configuration
+      color: 'primary',
+      mode: 'indeterminate',
+      
+      // Behavioral Options  
       hideDelay: 300,
       minDisplayTime: 200,
       enableSmartBatching: true,
@@ -129,8 +133,13 @@ export class MyComponent {
 The library intelligently handles multiple simultaneous HTTP requests to prevent progress bar flickering:
 
 ```typescript
-// Configure options globally
-provideNgxMatProgressBarOptions({
+// Single, comprehensive configuration
+provideNgxMatProgressBar({
+  // UI Settings
+  color: 'primary',
+  mode: 'indeterminate',
+  
+  // Behavioral Settings
   hideDelay: 500,           // Wait 500ms before hiding after requests complete
   minDisplayTime: 300,      // Show for at least 300ms to prevent flashing
   enableSmartBatching: true, // Group overlapping requests (recommended)
@@ -147,7 +156,15 @@ this.progressBar.configureOptions({
 ### Configuration Interface
 
 ```typescript
-interface NgxMatProgressBarOptions {
+interface NgxMatProgressBarConfiguration {
+  // UI Configuration
+  color?: 'primary' | 'accent' | 'warn';
+  mode?: 'determinate' | 'indeterminate' | 'buffer' | 'query';
+  value?: number;           // 0-100
+  bufferValue?: number;     // 0-100
+  visible?: boolean;        // Initial visibility
+  
+  // Behavioral Options
   hideDelay?: number;           // Delay before hiding (default: 300ms)
   minDisplayTime?: number;      // Minimum display time (default: 200ms)  
   enableSmartBatching?: boolean; // Smart HTTP batching (default: true)

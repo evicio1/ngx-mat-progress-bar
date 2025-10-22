@@ -11,6 +11,78 @@ This library follows Angular's major version numbering:
 - **Minor version** for new features and enhancements
 - **Patch version** for bug fixes and improvements
 
+## [20.1.0] - 2025-10-22
+
+### 🚨 BREAKING CHANGES
+
+- **providers**: Merged `provideNgxMatProgressBar` and `provideNgxMatProgressBarOptions` into a single provider function for cleaner API
+  
+  **Before:**
+  ```typescript
+  // Old approach - two separate provider functions
+  providers: [
+    provideNgxMatProgressBar({ color: 'primary', mode: 'indeterminate' }),
+    provideNgxMatProgressBarOptions({ hideDelay: 300, enableDebugLogs: true })
+  ]
+  ```
+  
+  **After:**
+  ```typescript
+  // New approach - single unified provider function
+  providers: [
+    provideNgxMatProgressBar({
+      color: 'primary',
+      mode: 'indeterminate', 
+      hideDelay: 300,
+      enableDebugLogs: true
+    })
+  ]
+  ```
+
+### ✨ Added
+
+- **providers**: New unified `NgxMatProgressBarConfiguration` interface combining UI and behavioral options
+- **providers**: Single `provideNgxMatProgressBar()` function accepts all configuration options
+- **api**: Simplified developer experience with cleaner API surface
+
+### 🔧 Changed
+
+- **providers**: Combined visual configuration (color, mode, value) with behavioral options (hideDelay, enableDebugLogs) in single provider
+- **types**: Updated TypeScript definitions to reflect merged configuration interface
+
+### 📚 Documentation
+
+- **readme**: Updated all examples to use new unified provider syntax
+- **api**: Added comprehensive JSDoc documentation for merged provider function
+
+### 🏗️ Migration Guide
+
+To migrate from v20.0.x to v20.1.x:
+
+1. **Replace two provider calls with one:**
+   ```typescript
+   // Remove separate providers
+   - provideNgxMatProgressBar({ color: 'primary' }),
+   - provideNgxMatProgressBarOptions({ hideDelay: 300 })
+   
+   // Use single merged provider
+   + provideNgxMatProgressBar({ 
+   +   color: 'primary',
+   +   hideDelay: 300 
+   + })
+   ```
+
+2. **Update imports (if needed):**
+   ```typescript
+   // Only import single provider function
+   import { provideNgxMatProgressBar } from 'ngx-mat-progress-bar';
+   ```
+
+3. **Combine configurations:**
+   - All visual options (color, mode, value, etc.) and behavioral options (hideDelay, enableDebugLogs, etc.) now go in the same configuration object
+
+---
+
 ## [20.0.0] - 2025-10-22
 
 ### 🎉 Initial Release

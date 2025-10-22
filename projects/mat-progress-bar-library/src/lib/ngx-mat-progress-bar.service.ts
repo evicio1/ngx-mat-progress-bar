@@ -1,4 +1,4 @@
-import { Injectable, signal, computed, Inject, Optional, EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { Injectable, signal, computed, Inject, Optional } from '@angular/core';
 import { ProgressBarMode } from '@angular/material/progress-bar';
 import { Router, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -334,18 +334,4 @@ export class NgxMatProgressBarService {
       options: this.getOptions()
     };
   }
-}
-
-/**
- * Provider function to configure progress bar options
- * Returns modern EnvironmentProviders for better type safety
- * Use this in your main.ts or app.config.ts
- */
-export function provideNgxMatProgressBarOptions(options: NgxMatProgressBarOptions): EnvironmentProviders {
-  return makeEnvironmentProviders([
-    {
-      provide: 'NGX_MAT_PROGRESS_BAR_OPTIONS',
-      useValue: options
-    }
-  ]);
 }

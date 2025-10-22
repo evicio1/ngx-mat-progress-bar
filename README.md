@@ -7,6 +7,8 @@
 
 A **modern Angular standalone library** that provides a global progress bar component using Angular Material Design. Built for the latest Angular with signals, functional interceptors, and standalone components. Perfect replacement for `ngx-progressbar` with configurable options and smart HTTP request batching.
 
+> **🚨 Breaking Change Notice (v20.1.0)**: The provider API has been simplified! `provideNgxMatProgressBar` and `provideNgxMatProgressBarOptions` are now merged into a single `provideNgxMatProgressBar()` function. See [Migration Guide](#-migration-from-v200x-to-v201x) below.
+
 ## 🎯 Key Features
 
 - 🚀 **Modern Angular** - Standalone components, signals, functional interceptors
@@ -46,8 +48,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { 
   provideNgxMatProgressBar, 
-  httpProgressInterceptor,
-  provideNgxMatProgressBarOptions 
+  httpProgressInterceptor
 } from 'ngx-mat-progress-bar';
 
 bootstrapApplication(AppComponent, {
@@ -55,8 +56,13 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(
       withInterceptors([httpProgressInterceptor])
     ),
-    // Optional: Configure progress bar options
-    provideNgxMatProgressBarOptions({
+    // Single provider for all configuration
+    provideNgxMatProgressBar({
+      // UI Configuration
+      color: 'primary',
+      mode: 'indeterminate',
+      
+      // Behavioral Options  
       hideDelay: 300,
       minDisplayTime: 200,
       enableSmartBatching: true,
@@ -129,8 +135,13 @@ export class MyComponent {
 The library intelligently handles multiple simultaneous HTTP requests to prevent progress bar flickering:
 
 ```typescript
-// Configure options globally
-provideNgxMatProgressBarOptions({
+// Single, comprehensive configuration
+provideNgxMatProgressBar({
+  // UI Settings
+  color: 'primary',
+  mode: 'indeterminate',
+  
+  // Behavioral Settings
   hideDelay: 500,           // Wait 500ms before hiding after requests complete
   minDisplayTime: 300,      // Show for at least 300ms to prevent flashing
   enableSmartBatching: true, // Group overlapping requests (recommended)
@@ -147,7 +158,15 @@ this.progressBar.configureOptions({
 ### Configuration Interface
 
 ```typescript
-interface NgxMatProgressBarOptions {
+interface NgxMatProgressBarConfiguration {
+  // UI Configuration
+  color?: 'primary' | 'accent' | 'warn';
+  mode?: 'determinate' | 'indeterminate' | 'buffer' | 'query';
+  value?: number;           // 0-100
+  bufferValue?: number;     // 0-100
+  visible?: boolean;        // Initial visibility
+  
+  // Behavioral Options
   hideDelay?: number;           // Delay before hiding (default: 300ms)
   minDisplayTime?: number;      // Minimum display time (default: 200ms)  
   enableSmartBatching?: boolean; // Smart HTTP batching (default: true)
@@ -283,7 +302,43 @@ This project is licensed under the **MIT License** - see the [LICENSE](https://g
 - ❌ Liability
 - ❌ Warranty
 
-## 🔗 Links
+## 🔄 Migration from v20.0.x to v20.1.x
+
+### Breaking Change: Merged Provider API
+
+In v20.1.0, we simplified the provider API by merging two functions into one for better developer experience.
+
+**Before (v20.0.x):**
+```typescript
+// Old approach - two separate provider functions
+providers: [
+  provideNgxMatProgressBar({ color: 'primary', mode: 'indeterminate' }),
+  provideNgxMatProgressBarOptions({ hideDelay: 300, enableDebugLogs: true })
+]
+```
+
+**After (v20.1.x):**
+```typescript
+// New approach - single unified provider function
+providers: [
+  provideNgxMatProgressBar({
+    color: 'primary',
+    mode: 'indeterminate', 
+    hideDelay: 300,
+    enableDebugLogs: true
+  })
+]
+```
+
+### Migration Steps:
+
+1. **Combine provider calls** - Merge configuration objects from both providers into one
+2. **Remove duplicate import** - Only import `provideNgxMatProgressBar`
+3. **Update configuration** - All options now go in the same config object
+
+The new API is cleaner and follows Angular ecosystem patterns better!
+
+## �🔗 Links
 
 - [📦 NPM Package](https://www.npmjs.com/package/ngx-mat-progress-bar)
 - [🐙 GitHub Repository](https://github.com/evicio1/ngx-mat-progress-bar)

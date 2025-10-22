@@ -30,15 +30,8 @@ export class App {
     public progressBar: NgxMatProgressBarService,
     private http: HttpClient
   ) {
-    // Example: Configure progress bar options for this demo
-    this.progressBar.configureOptions({
-      hideDelay: 500, // Wait 500ms before hiding (instead of default 300ms)
-      minDisplayTime: 300, // Show for at least 300ms (instead of default 200ms)
-      enableSmartBatching: true, // Enable smart batching for HTTP requests
-      enableDebugLogs: true // Enable debug logs to see what's happening
-    });
-    
-    console.log('Progress bar configured with custom options:', this.progressBar.getOptions());
+    // Configuration is now done via provideNgxMatProgressBar in app.config.ts
+    console.log('Progress bar configured via provider:', this.progressBar.getOptions());
   }
 
   startProgress(): void {
