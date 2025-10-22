@@ -3,6 +3,7 @@
 [![npm version](https://badge.fury.io/js/ngx-mat-progress-bar.svg)](https://badge.fury.io/js/ngx-mat-progress-bar)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
 [![Angular](https://img.shields.io/badge/Angular-20+-red.svg)](https://angular.io/)
+[![npm downloads](https://img.shields.io/npm/dm/ngx-mat-progress-bar.svg)](https://www.npmjs.com/package/ngx-mat-progress-bar)
 
 A **modern Angular standalone library** that provides a global progress bar component using Angular Material Design. Built for the latest Angular with signals, functional interceptors, and standalone components. Perfect replacement for `ngx-progressbar` with configurable options and smart HTTP request batching.
 
