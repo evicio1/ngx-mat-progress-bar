@@ -1,0 +1,35 @@
+{
+  "name": "ngx-mat-progress-bar",
+  "version": "1.0.0",
+  "description": "Angular Material progress bar library with global progress indicator similar to ngx-progressbar but using Material Design components",
+  "keywords": [
+    "angular",
+    "material",
+    "progress",
+    "progressbar",
+    "loading",
+    "loader",
+    "angular-material",
+    "ngx"
+  ],
+  "author": "evicio1",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evicio1/ngx-mat-progress-bar.git"
+  },
+  "homepage": "https://github.com/evicio1/ngx-mat-progress-bar#readme",
+  "bugs": {
+    "url": "https://github.com/evicio1/ngx-mat-progress-bar/issues"
+  },
+  "peerDependencies": {
+    "@angular/common": "^20.3.0",
+    "@angular/core": "^20.3.0",
+    "@angular/material": "^20.2.0",
+    "@angular/cdk": "^20.2.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}

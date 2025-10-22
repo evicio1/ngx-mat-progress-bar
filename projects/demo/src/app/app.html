@@ -1,0 +1,141 @@
+<!-- Progress bar wrapper -->
+<div class="progress-bar-wrapper">
+  <ngx-mat-progress-bar></ngx-mat-progress-bar>
+</div>
+
+<!-- Navigation -->
+<nav class="main-nav">
+  <div class="nav-container">
+    <h2>Progress Bar Demo</h2>
+    <div class="nav-links">
+      <a mat-button routerLink="/home" routerLinkActive="active">Home</a>
+      <a mat-button routerLink="/about" routerLinkActive="active">About</a>
+      <a mat-button routerLink="/contact" routerLinkActive="active">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Demo content -->
+<div class="demo-container">
+  <h1>{{ title() }}</h1>
+  
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Progress Bar Controls</mat-card-title>
+      <mat-card-subtitle>Test the different progress bar functions</mat-card-subtitle>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Control buttons -->
+      <div class="button-group">
+        <button mat-raised-button color="primary" (click)="startProgress()">
+          Start Progress
+        </button>
+        
+        <button mat-raised-button color="accent" (click)="setProgress(25)">
+          Set 25%
+        </button>
+        
+        <button mat-raised-button color="accent" (click)="setProgress(50)">
+          Set 50%
+        </button>
+        
+        <button mat-raised-button color="accent" (click)="setProgress(75)">
+          Set 75%
+        </button>
+        
+        <button mat-raised-button color="primary" (click)="completeProgress()">
+          Complete
+        </button>
+        
+        <button mat-raised-button color="warn" (click)="resetProgress()">
+          Reset
+        </button>
+      </div>
+      
+      <!-- Demo work button -->
+      <div class="button-group">
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="simulateWork()"
+          [disabled]="isWorking()">
+          {{ buttonState().text }}
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="accent" 
+          (click)="simulateHttpRequest()">
+          Test HTTP Request
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="accent" 
+          (click)="simulateMultipleHttpRequests()">
+          Test Multiple HTTP Calls
+        </button>
+        
+        <button 
+          mat-raised-button 
+          color="warn" 
+          (click)="testRouterWithManualProgress()">
+          Test Router Override
+        </button>
+
+        <button 
+          mat-raised-button 
+          color="primary" 
+          (click)="testConfiguration()">
+          Test Custom Config
+        </button>
+      </div>
+      
+      <!-- Status display -->
+      <div class="status" *ngIf="isWorking() || progressBar.isLoading() || progressBar.isNavigating()">
+        <p><strong>Status:</strong> {{ isWorking() ? 'Working' : 'Ready' }}</p>
+        <p><strong>Active Requests:</strong> {{ progressBar.activeRequests() }}</p>
+        <p><strong>Is Loading:</strong> {{ progressBar.isLoading() ? 'Yes' : 'No' }}</p>
+        <p><strong>Is Navigating:</strong> {{ progressBar.isNavigating() ? 'Yes' : 'No' }}</p>
+      </div>
+
+      <!-- Configuration display -->
+      <div class="config-info">
+        <h4>Current Configuration:</h4>
+        <ul>
+          <li><strong>Hide Delay:</strong> {{ progressBar.getOptions().hideDelay }}ms</li>
+          <li><strong>Min Display Time:</strong> {{ progressBar.getOptions().minDisplayTime }}ms</li>
+          <li><strong>Smart Batching:</strong> {{ progressBar.getOptions().enableSmartBatching ? 'Enabled' : 'Disabled' }}</li>
+          <li><strong>Debug Logs:</strong> {{ progressBar.getOptions().enableDebugLogs ? 'Enabled' : 'Disabled' }}</li>
+        </ul>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+  <!-- Features card -->
+  <mat-card class="demo-card">
+    <mat-card-header>
+      <mat-card-title>Modern Angular Features</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <ul>
+        <li>🎨 Pure Angular Material progress bar</li>
+        <li>⚡ Signal-based reactive state</li>
+        <li>🔄 Functional HTTP interceptor</li>
+        <li>🧭 Router navigation tracking</li>
+        <li>🎛️ Modern provider functions</li>
+        <li>⚙️ Configurable debounce & timing options</li>
+        <li>🔄 Smart request batching (no flickering)</li>
+        <li>🐛 Debug logging for troubleshooting</li>
+        <li>🎨 User-controlled styling</li>
+        <li>♿ Native Material accessibility</li>
+        <li>📱 Responsive design</li>
+        <li>🚀 Latest Angular standards</li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<router-outlet></router-outlet>
