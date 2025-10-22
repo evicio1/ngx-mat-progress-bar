@@ -1,7 +1,6 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideNgxMatProgressBar, httpProgressInterceptor } from 'mat-progress-bar-library';
 
 import { routes } from './app.routes';
@@ -14,10 +13,10 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([httpProgressInterceptor])
     ),
-    provideAnimationsAsync(),
     provideNgxMatProgressBar({
       config: {
-        color: 'primary'
+        color: 'primary',
+        mode: 'indeterminate'
       }
     })
   ]

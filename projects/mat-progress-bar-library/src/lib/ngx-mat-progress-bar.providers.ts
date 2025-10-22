@@ -1,4 +1,4 @@
-import { Provider } from '@angular/core';
+import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { NgxMatProgressBarService, NgxMatProgressBarConfig } from './ngx-mat-progress-bar.service';
 
 export interface NgxMatProgressBarProviderConfig {
@@ -8,6 +8,7 @@ export interface NgxMatProgressBarProviderConfig {
 
 /**
  * Provides NgxMatProgressBar service with optional configuration
+ * Returns modern EnvironmentProviders for better type safety
  * 
  * Usage:
  * ```typescript
@@ -27,8 +28,8 @@ export interface NgxMatProgressBarProviderConfig {
  */
 export function provideNgxMatProgressBar(
   config?: NgxMatProgressBarProviderConfig
-): Provider[] {
-  return [
+): EnvironmentProviders {
+  return makeEnvironmentProviders([
     NgxMatProgressBarService,
     ...(config?.config ? [
       {
@@ -36,5 +37,5 @@ export function provideNgxMatProgressBar(
         useValue: config.config
       }
     ] : [])
-  ];
+  ]);
 }
