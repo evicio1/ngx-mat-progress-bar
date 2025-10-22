@@ -1,6 +1,6 @@
 {
   "name": "ngx-mat-progress-bar",
-  "version": "20.0.0",
+  "version": "20.0.1",
   "description": "Modern Angular 20+ Material progress bar library with signals, standalone components, and smart HTTP request batching",
   "keywords": [
     "angular",
