@@ -1,14 +1,14 @@
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
-import { NgxMatProgressBarService, NgxMatProgressBarConfig, NgxMatProgressBarOptions } from './ngx-mat-progress-bar.service';
+import { NgxMatProgressBarService, NgxMatProgressBarOptions } from './ngx-mat-progress-bar.service';
 
 export interface NgxMatProgressBarConfiguration extends NgxMatProgressBarOptions {
-  /** Progress bar color theme */
+  /** Progress bar color theme (Material 2 themes only, see MatProgressBar.color) */
   color?: 'primary' | 'accent' | 'warn';
-  /** Progress bar mode */
+  /** Initial progress bar mode. start(), HTTP requests and navigation always switch to indeterminate */
   mode?: 'determinate' | 'indeterminate' | 'buffer' | 'query';
-  /** Progress bar value (0-100) */
+  /** Initial progress bar value (0-100) */
   value?: number;
-  /** Buffer value for buffer mode (0-100) */
+  /** Initial buffer value for buffer mode (0-100) */
   bufferValue?: number;
   /** Whether to show the progress bar initially */
   visible?: boolean;
@@ -43,10 +43,13 @@ export function provideNgxMatProgressBar(
   const providers: any[] = [NgxMatProgressBarService];
   
   // Add progress bar UI configuration if provided
-  if (color || mode || value !== undefined || bufferValue !== undefined || visible !== undefined) {
+  const uiConfig = Object.fromEntries(
+    Object.entries({ color, mode, value, bufferValue, visible }).filter(([, setting]) => setting !== undefined)
+  );
+  if (Object.keys(uiConfig).length > 0) {
     providers.push({
       provide: 'NGX_MAT_PROGRESS_BAR_CONFIG',
-      useValue: { color, mode, value, bufferValue, visible }
+      useValue: uiConfig
     });
   }
   

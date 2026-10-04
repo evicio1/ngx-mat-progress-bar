@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgxMatProgressBarComponent } from './ngx-mat-progress-bar.component';
 import { NgxMatProgressBarService } from './ngx-mat-progress-bar.service';
+import { provideNgxMatProgressBar } from './ngx-mat-progress-bar.providers';
 
 describe('NgxMatProgressBarComponent', () => {
   let component: NgxMatProgressBarComponent;
@@ -45,11 +46,46 @@ describe('NgxMatProgressBarComponent', () => {
   });
 
   it('should complete and hide progress', () => {
+    jasmine.clock().install();
+
     service.start();
     service.complete();
+    fixture.detectChanges();
+    expect(service.config().value).toBe(100);
+
+    // Hidden once the completion animation has had time to show
+    jasmine.clock().tick(300);
     fixture.detectChanges();
     
     const config = service.config();
     expect(config.visible).toBe(false);
+    expect(fixture.nativeElement.querySelector('mat-progress-bar')).toBeNull();
+
+    jasmine.clock().uninstall();
+  });
+
+  it('should apply a bound color and follow later changes', () => {
+    service.start();
+    fixture.componentRef.setInput('color', 'accent');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('mat-progress-bar').classList).toContain('mat-accent');
+
+    fixture.componentRef.setInput('color', 'warn');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('mat-progress-bar').classList).toContain('mat-warn');
+  });
+});
+
+describe('NgxMatProgressBarComponent with provideNgxMatProgressBar', () => {
+  it('should use the provided color when none is bound', () => {
+    TestBed.configureTestingModule({
+      imports: [NgxMatProgressBarComponent],
+      providers: [provideNgxMatProgressBar({ color: 'warn' })]
+    });
+    const fixture = TestBed.createComponent(NgxMatProgressBarComponent);
+    TestBed.inject(NgxMatProgressBarService).start();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('mat-progress-bar').classList).toContain('mat-warn');
   });
 });
