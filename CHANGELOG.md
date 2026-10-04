@@ -11,6 +11,44 @@ This library follows Angular's major version numbering:
 - **Minor version** for new features and enhancements
 - **Patch version** for bug fixes and improvements
 
+## [22.0.0] - 2026-10-05
+
+### 🚨 BREAKING CHANGES
+
+- **angular**: Requires Angular 22 and Angular Material 22. Peer dependencies are now `^22.0.0`. Use `ngx-mat-progress-bar@20` with Angular 20. There is no 21.x release
+- **component**: `color` on `<ngx-mat-progress-bar>` is a signal input. Template bindings are unchanged. Code that reads or assigns `component.color` directly must use `component.color()` and `componentRef.setInput('color', value)`
+- **providers**: `color`, `mode`, `value`, `bufferValue` and `visible` passed to `provideNgxMatProgressBar()` are now applied (see Fixed). An application that passed values it did not want will see them take effect
+
+### 🐛 Fixed
+
+- **providers**: `color`, `mode`, `value`, `bufferValue` and `visible` passed to `provideNgxMatProgressBar()` were ignored. They now set the bar's initial state
+- **component**: A change to a bound `[color]` after the first render was ignored. The bar now follows it
+- **component**: The component forced the color to `primary` when no `color` was bound, which would have overridden the provider's color
+- **package**: `@angular/router` and `rxjs` are imported by the library but were missing from `peerDependencies`
+- **package**: A package built locally with `npm run package` or `npm run publish:npm` had no `LICENSE` and an outdated README. `npm run build:lib` now copies both from the repository root
+- **package**: The copy published to GitHub Packages contained a tarball of itself
+
+### 🔧 Changed
+
+- **angular**: Built with Angular 22.2.1, Angular Material 22.2.1, ng-packagr 22.2.4 and TypeScript 6.0
+- **component**: Templates use built-in control flow (`@if`) instead of `*ngIf`, so the component no longer imports `CommonModule`
+- **release**: The package is published from GitHub Actions with npm trusted publishing (OIDC) instead of an `NPM_TOKEN` secret, and carries a provenance attestation. See [PUBLISHING.md](PUBLISHING.md)
+- **tests**: The unit tests run again. All 15 were failing on 20.1.0
+
+### 📚 Documentation
+
+- **readme**: Compatibility table, theme requirement, what the UI settings do, and an upgrade guide for v22
+- **configuration**: `CONFIGURATION.md` still used `provideNgxMatProgressBarOptions`, which was removed in 20.1.0. It also described a behaviour for `enableSmartBatching: false` that was never implemented. The option has no effect
+- **publishing**: New `PUBLISHING.md`
+
+### 🏗️ Migration Guide
+
+1. Upgrade the application to Angular 22: `ng update @angular/core@22 @angular/cli@22 @angular/material@22`
+2. `npm install ngx-mat-progress-bar@22`
+3. If code reads or assigns the component's `color` property directly, switch to `color()` and `setInput('color', value)`
+
+---
+
 ## [20.1.0] - 2025-10-22
 
 ### 🚨 BREAKING CHANGES
@@ -169,8 +207,8 @@ Key innovations:
 
 ### Versioning Strategy
 Starting with v20.0.0 to align with Angular 20+:
-- **20.x.x**: Compatible with Angular 20+
-- **21.x.x**: Will be compatible with Angular 21+ (when released)
+- **20.x.x**: Compatible with Angular 20
+- **22.x.x**: Compatible with Angular 22 (there is no 21.x release)
 - Minor versions for new features, patch versions for fixes
 - Initial release of ngx-mat-progress-bar
 - Pure Angular Material progress bar wrapper (no additional divs)

@@ -27,9 +27,9 @@ Configure globally in your `main.ts` or `app.config.ts`:
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { 
-  httpProgressInterceptor, 
-  provideNgxMatProgressBarOptions 
+import {
+  httpProgressInterceptor,
+  provideNgxMatProgressBar
 } from 'ngx-mat-progress-bar';
 import { App } from './app/app';
 
@@ -39,7 +39,7 @@ bootstrapApplication(App, {
     provideHttpClient(withInterceptors([httpProgressInterceptor])),
     
     // Configure progress bar options globally
-    provideNgxMatProgressBarOptions({
+    provideNgxMatProgressBar({
       hideDelay: 500,           // Wait 500ms before hiding
       minDisplayTime: 300,      // Show for at least 300ms
       enableSmartBatching: true, // Prevent flickering on multiple requests
@@ -104,25 +104,12 @@ Minimum time the progress bar stays visible to prevent ultra-quick flashes.
 ```
 
 ### `enableSmartBatching` (default: true)
-Enables intelligent request batching to prevent progress bar flickering.
+Reserved. The option is stored and returned by `getOptions()`, but the library does not read it yet: overlapping HTTP requests are always batched, also when it is set to `false`.
 
-**When enabled:**
+**What batching does:**
 - Multiple overlapping HTTP requests are treated as one operation
 - Progress bar stays visible until ALL requests complete
-- Smooth, professional user experience
-
-**When disabled:**
-- Each HTTP request shows/hides progress bar independently
-- Can cause flickering with rapid requests
-- Only use if you need per-request progress feedback
-
-```typescript
-// Enable for smooth UX (recommended)
-{ enableSmartBatching: true }
-
-// Disable for per-request feedback
-{ enableSmartBatching: false }
-```
+- A request that starts within `hideDelay` of the previous one keeps the bar up instead of flashing it
 
 ### `enableDebugLogs` (default: false)
 Shows detailed console logs for troubleshooting progress bar behavior.
@@ -147,7 +134,7 @@ Shows detailed console logs for troubleshooting progress bar behavior.
 Loading multiple data sources simultaneously:
 
 ```typescript
-provideNgxMatProgressBarOptions({
+provideNgxMatProgressBar({
   hideDelay: 400,           // Wait for potential additional requests
   minDisplayTime: 250,      // Ensure users see loading feedback
   enableSmartBatching: true, // Essential for smooth UX
@@ -183,7 +170,7 @@ progressBar.configureOptions({
 Optimized for touch interfaces:
 
 ```typescript
-provideNgxMatProgressBarOptions({
+provideNgxMatProgressBar({
   hideDelay: 250,           // Quick response
   minDisplayTime: 300,      // Ensure visibility on slower devices
   enableSmartBatching: true,
@@ -205,7 +192,7 @@ console.log('Debug enabled:', currentOptions.enableDebugLogs);
 
 - **`hideDelay`**: Higher values use more setTimeout resources but provide smoother UX
 - **`minDisplayTime`**: Minimal performance impact, improves perceived performance
-- **`enableSmartBatching`**: Improves performance by reducing DOM updates
+- **`enableSmartBatching`**: No effect yet, see above
 - **`enableDebugLogs`**: Disable in production to avoid console overhead
 
 ## 🔄 Dynamic Configuration
