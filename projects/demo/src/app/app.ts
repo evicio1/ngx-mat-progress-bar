@@ -1,6 +1,6 @@
 import { Component, signal, computed } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { HttpClient } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +8,7 @@ import { NgxMatProgressBarComponent, NgxMatProgressBarService } from 'mat-progre
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule, MatButtonModule, MatCardModule, NgxMatProgressBarComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatCardModule, NgxMatProgressBarComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
