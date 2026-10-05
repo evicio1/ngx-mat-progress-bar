@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+$font-family: "Roboto, 'Helvetica Neue', sans-serif";
+
+/* Without a theme the Material components render unstyled and the progress bar is black */
+html {
+  color-scheme: light;
+  @include mat.theme((
+    color: mat.$azure-palette,
+    typography: $font-family,
+    density: 0
+  ));
+}
+
+body {
+  font-family: #{$font-family};
+}

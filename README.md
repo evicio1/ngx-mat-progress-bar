@@ -2,12 +2,12 @@
 
 [![npm version](https://badge.fury.io/js/ngx-mat-progress-bar.svg)](https://badge.fury.io/js/ngx-mat-progress-bar)
 [![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
-[![Angular](https://img.shields.io/badge/Angular-20+-red.svg)](https://angular.io/)
+[![Angular](https://img.shields.io/badge/Angular-22+-red.svg)](https://angular.dev/)
 [![npm downloads](https://img.shields.io/npm/dm/ngx-mat-progress-bar.svg)](https://www.npmjs.com/package/ngx-mat-progress-bar)
 
 A **modern Angular standalone library** that provides a global progress bar component using Angular Material Design. Built for the latest Angular with signals, functional interceptors, and standalone components. Perfect replacement for `ngx-progressbar` with configurable options and smart HTTP request batching.
 
-> **🚨 Breaking Change Notice (v20.1.0)**: The provider API has been simplified! `provideNgxMatProgressBar` and `provideNgxMatProgressBarOptions` are now merged into a single `provideNgxMatProgressBar()` function. See [Migration Guide](#-migration-from-v200x-to-v201x) below.
+> **🚨 v22.0.0 requires Angular 22.** Stay on `ngx-mat-progress-bar@20` for Angular 20. See [Upgrading to v22](#-upgrading-to-v22) below.
 
 ## 🎯 Key Features
 
@@ -31,13 +31,24 @@ A **modern Angular standalone library** that provides a global progress bar comp
 npm install ngx-mat-progress-bar
 ```
 
+### Compatibility
+
+| ngx-mat-progress-bar | Angular | Angular Material |
+|----------------------|---------|------------------|
+| 22.x | 22.x | 22.x |
+| 20.x | 20.x | 20.x |
+
+There is no 21.x release.
+
 ### Peer Dependencies
 
-Make sure you have the required peer dependencies installed:
+The library needs `@angular/core`, `@angular/common`, `@angular/router`, `@angular/material`, `@angular/cdk` and `rxjs`. An Angular application already has most of them; add Angular Material if you have not yet:
 
 ```bash
 npm install @angular/material @angular/cdk
 ```
+
+The progress bar takes its colors from your [Angular Material theme](https://material.angular.dev/guide/theming). Without a theme it still works, but it renders black.
 
 ## 🚀 Quick Start
 
@@ -60,9 +71,8 @@ bootstrapApplication(AppComponent, {
     provideNgxMatProgressBar({
       // UI Configuration
       color: 'primary',
-      mode: 'indeterminate',
-      
-      // Behavioral Options  
+
+      // Behavioral Options
       hideDelay: 300,
       minDisplayTime: 200,
       enableSmartBatching: true,
@@ -79,6 +89,9 @@ bootstrapApplication(AppComponent, {
 <div class="progress-wrapper">
   <ngx-mat-progress-bar></ngx-mat-progress-bar>
 </div>
+
+<!-- Optional: bind the color, it overrides the one from the provider -->
+<ngx-mat-progress-bar [color]="barColor()"></ngx-mat-progress-bar>
 
 <!-- Your app content -->
 <router-outlet></router-outlet>
@@ -139,8 +152,7 @@ The library intelligently handles multiple simultaneous HTTP requests to prevent
 provideNgxMatProgressBar({
   // UI Settings
   color: 'primary',
-  mode: 'indeterminate',
-  
+
   // Behavioral Settings
   hideDelay: 500,           // Wait 500ms before hiding after requests complete
   minDisplayTime: 300,      // Show for at least 300ms to prevent flashing
@@ -161,18 +173,24 @@ this.progressBar.configureOptions({
 interface NgxMatProgressBarConfiguration {
   // UI Configuration
   color?: 'primary' | 'accent' | 'warn';
-  mode?: 'determinate' | 'indeterminate' | 'buffer' | 'query';
-  value?: number;           // 0-100
-  bufferValue?: number;     // 0-100
+  mode?: 'determinate' | 'indeterminate' | 'buffer' | 'query'; // Initial mode
+  value?: number;           // Initial value, 0-100
+  bufferValue?: number;     // Initial buffer value, 0-100
   visible?: boolean;        // Initial visibility
-  
+
   // Behavioral Options
   hideDelay?: number;           // Delay before hiding (default: 300ms)
-  minDisplayTime?: number;      // Minimum display time (default: 200ms)  
-  enableSmartBatching?: boolean; // Smart HTTP batching (default: true)
+  minDisplayTime?: number;      // Minimum display time (default: 200ms)
+  enableSmartBatching?: boolean; // Reserved, has no effect yet (requests are always batched)
   enableDebugLogs?: boolean;    // Debug console logs (default: false)
 }
 ```
+
+Notes on the UI configuration:
+
+- **`color`** follows Angular Material: it only changes the bar in Material 2 themes. In a Material 3 theme (the default for new apps) it has no visual effect; style the bar with the [progress bar tokens](https://material.angular.dev/components/progress-bar/styling) instead.
+- **`mode`, `value`, `bufferValue` and `visible`** describe the bar's state at startup. `start()`, HTTP requests and router navigation always switch the bar to `indeterminate`, and the first navigation hides it again when it ends.
+- Up to v20.1.0 these five settings were accepted but ignored. They are applied from v22.0.0.
 
 ## 📖 API Reference
 
@@ -302,6 +320,17 @@ This project is licensed under the **MIT License** - see the [LICENSE](https://g
 - ❌ Liability
 - ❌ Warranty
 
+## 🚀 Upgrading to v22
+
+1. Upgrade your application to Angular 22 and Angular Material 22 (`ng update @angular/core@22 @angular/cli@22 @angular/material@22`).
+2. `npm install ngx-mat-progress-bar@22`
+
+What changed for your code:
+
+- **`color` on the component is a signal input.** Template bindings (`[color]="..."`, `color="accent"`) work as before, and changes to a bound value are now applied (they were ignored after the first render). Code that reads or assigns the property directly must change: read it with `component.color()`, set it with `componentRef.setInput('color', value)`.
+- **`color` passed to `provideNgxMatProgressBar()` is now applied.** If you pass a color there that you did not want, remove it.
+- The library works in zoneless applications, the default for new Angular 22 apps, and with `provideZoneChangeDetection()`.
+
 ## 🔄 Migration from v20.0.x to v20.1.x
 
 ### Breaking Change: Merged Provider API
@@ -338,14 +367,15 @@ providers: [
 
 The new API is cleaner and follows Angular ecosystem patterns better!
 
-## �🔗 Links
+## 🔗 Links
 
 - [📦 NPM Package](https://www.npmjs.com/package/ngx-mat-progress-bar)
 - [🐙 GitHub Repository](https://github.com/evicio1/ngx-mat-progress-bar)
 - [🐛 Issues & Support](https://github.com/evicio1/ngx-mat-progress-bar/issues)
 - [⚙️ Configuration Guide](https://github.com/evicio1/ngx-mat-progress-bar/blob/main/CONFIGURATION.md)
 - [📝 Changelog](https://github.com/evicio1/ngx-mat-progress-bar/blob/main/CHANGELOG.md)
-- [🎨 Angular Material](https://material.angular.io/)
+- [🚢 Publishing Guide](https://github.com/evicio1/ngx-mat-progress-bar/blob/main/PUBLISHING.md)
+- [🎨 Angular Material](https://material.angular.dev/)
 
 ---
 

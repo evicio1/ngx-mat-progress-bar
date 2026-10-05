@@ -66,13 +66,19 @@ export class NgxMatProgressBarService {
 
   constructor(
     private router: Router,
-    @Optional() @Inject('NGX_MAT_PROGRESS_BAR_OPTIONS') private options?: NgxMatProgressBarOptions
+    @Optional() @Inject('NGX_MAT_PROGRESS_BAR_OPTIONS') private options?: NgxMatProgressBarOptions,
+    @Optional() @Inject('NGX_MAT_PROGRESS_BAR_CONFIG') initialConfig?: NgxMatProgressBarConfig
   ) {
     this.initializeRouterTracking();
     
     // Apply provided options
     if (this.options) {
       this.configureOptions(this.options);
+    }
+
+    // Apply provided UI configuration as the initial state
+    if (initialConfig) {
+      this.updateConfig(initialConfig);
     }
   }
 

@@ -1,10 +1,10 @@
 {
   "name": "ngx-mat-progress-bar",
-  "version": "20.1.0",
-  "description": "Modern Angular 20+ Material progress bar library with signals, standalone components, and smart HTTP request batching",
+  "version": "22.0.0",
+  "description": "Modern Angular 22+ Material progress bar library with signals, standalone components, and smart HTTP request batching",
   "keywords": [
     "angular",
-    "angular20",
+    "angular22",
     "material",
     "material-design",
     "progress",
@@ -32,17 +32,19 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/evicio1/ngx-mat-progress-bar.git"
+    "url": "git+https://github.com/evicio1/ngx-mat-progress-bar.git"
   },
   "homepage": "https://github.com/evicio1/ngx-mat-progress-bar#readme",
   "bugs": {
     "url": "https://github.com/evicio1/ngx-mat-progress-bar/issues"
   },
   "peerDependencies": {
-    "@angular/common": "^20.3.6",
-    "@angular/core": "^20.3.6",
-    "@angular/material": "^20.2.9",
-    "@angular/cdk": "^20.2.9"
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/material": "^22.0.0",
+    "@angular/router": "^22.0.0",
+    "rxjs": "^6.5.3 || ^7.4.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"

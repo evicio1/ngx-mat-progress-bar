@@ -1,20 +1,20 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy, computed, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ChangeDetectionStrategy, computed, effect, input } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgxMatProgressBarService, NgxMatProgressBarConfig, ThemePalette } from './ngx-mat-progress-bar.service';
+import { NgxMatProgressBarService, ThemePalette } from './ngx-mat-progress-bar.service';
 
 @Component({
   selector: 'ngx-mat-progress-bar',
   standalone: true,
-  imports: [CommonModule, MatProgressBarModule],
+  imports: [MatProgressBarModule],
   template: `
-    <mat-progress-bar
-      *ngIf="config().visible"
-      [color]="config().color"
-      [mode]="config().mode || 'indeterminate'"
-      [value]="config().value"
-      [bufferValue]="config().bufferValue">
-    </mat-progress-bar>
+    @if (config().visible) {
+      <mat-progress-bar
+        [color]="config().color"
+        [mode]="config().mode || 'indeterminate'"
+        [value]="config().value"
+        [bufferValue]="config().bufferValue">
+      </mat-progress-bar>
+    }
   `,
   styles: [`
     :host {
@@ -23,8 +23,9 @@ import { NgxMatProgressBarService, NgxMatProgressBarConfig, ThemePalette } from 
   `],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NgxMatProgressBarComponent implements OnInit {
-  @Input() color: ThemePalette = 'primary';
+export class NgxMatProgressBarComponent {
+  /** Overrides the color set with provideNgxMatProgressBar(). Leave unbound to keep that color. */
+  readonly color = input<ThemePalette>();
 
   // Signal-based configuration
   protected readonly config = computed(() => this.progressBarService.config());
@@ -32,16 +33,10 @@ export class NgxMatProgressBarComponent implements OnInit {
   constructor(private progressBarService: NgxMatProgressBarService) {
     // Effect to update service config when input changes
     effect(() => {
-      if (this.color) {
-        this.progressBarService.updateConfig({ color: this.color });
+      const color = this.color();
+      if (color) {
+        this.progressBarService.updateConfig({ color });
       }
-    });
-  }
-
-  ngOnInit(): void {
-    // Apply input values to service config
-    this.progressBarService.updateConfig({
-      color: this.color
     });
   }
 }
